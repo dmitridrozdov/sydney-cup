@@ -12,12 +12,10 @@ interface TimeLeft {
 
 function getTimeLeft(targetDate: string): TimeLeft {
   const target = new Date(targetDate).getTime();
-  const now = Date.now();
-  const diff = Math.max(0, target - now);
-
+  const diff = Math.max(0, target - Date.now());
   return {
-    days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-    hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+    days:    Math.floor(diff / (1000 * 60 * 60 * 24)),
+    hours:   Math.floor((diff / (1000 * 60 * 60)) % 24),
     minutes: Math.floor((diff / (1000 * 60)) % 60),
     seconds: Math.floor((diff / 1000) % 60),
   };
@@ -27,11 +25,7 @@ function pad(n: number): string {
   return String(n).padStart(2, "0");
 }
 
-interface CountdownProps {
-  targetDate: string;
-}
-
-export default function Countdown({ targetDate }: CountdownProps) {
+export default function Countdown({ targetDate }: { targetDate: string }) {
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
   const [started, setStarted] = useState(false);
 
@@ -39,9 +33,7 @@ export default function Countdown({ targetDate }: CountdownProps) {
     const update = () => {
       const t = getTimeLeft(targetDate);
       setTimeLeft(t);
-      if (t.days === 0 && t.hours === 0 && t.minutes === 0 && t.seconds === 0) {
-        setStarted(true);
-      }
+      if (!t.days && !t.hours && !t.minutes && !t.seconds) setStarted(true);
     };
     update();
     const id = setInterval(update, 1000);
@@ -59,10 +51,10 @@ export default function Countdown({ targetDate }: CountdownProps) {
   }
 
   const units = [
-    { label: "Days", value: timeLeft.days, display: String(timeLeft.days).padStart(2, "0") },
-    { label: "Hours", value: timeLeft.hours, display: pad(timeLeft.hours) },
-    { label: "Minutes", value: timeLeft.minutes, display: pad(timeLeft.minutes) },
-    { label: "Seconds", value: timeLeft.seconds, display: pad(timeLeft.seconds) },
+    { label: "Days",    display: String(timeLeft.days).padStart(2, "0") },
+    { label: "Hours",   display: pad(timeLeft.hours) },
+    { label: "Minutes", display: pad(timeLeft.minutes) },
+    { label: "Seconds", display: pad(timeLeft.seconds) },
   ];
 
   return (
@@ -76,16 +68,27 @@ export default function Countdown({ targetDate }: CountdownProps) {
                   {unit.display}
                 </span>
               </div>
-              <div className={styles.cardGlow} />
-              {/* Corner accents */}
-              <span className={`${styles.corner} ${styles.cornerTL}`} />
-              <span className={`${styles.corner} ${styles.cornerTR}`} />
-              <span className={`${styles.corner} ${styles.cornerBL}`} />
-              <span className={`${styles.corner} ${styles.cornerBR}`} />
+              {i === 0 && (
+                <>
+                  <span className={`${styles.corner} ${styles.cornerTL}`} />
+                  <span className={`${styles.corner} ${styles.cornerBL}`} />
+                </>
+              )}
+              {i === units.length - 1 && (
+                <>
+                  <span className={`${styles.corner} ${styles.cornerTR}`} />
+                  <span className={`${styles.corner} ${styles.cornerBR}`} />
+                </>
+              )}
             </div>
             <span className={styles.label}>{unit.label}</span>
           </div>
-          {i < 3 && <span className={styles.separator}>·</span>}
+          {i < 3 && (
+            <div className={styles.separator}>
+              <span className={styles.sepDot} />
+              <span className={styles.sepDot} />
+            </div>
+          )}
         </div>
       ))}
     </div>
