@@ -75,10 +75,7 @@ export default function Home() {
           <span className={styles.dateValue}>August 2, 2026 · 8:00 AM</span>
         </div>
 
-        {/* Countdown */}
-        <Countdown targetDate="2026-08-02T08:00:00" />
-        
-        <div className={styles.venueBlock}>
+         <div className={styles.venueBlock}>
           <svg width="12" height="16" viewBox="0 0 12 16" fill="none">
             <path
               d="M6 0C2.69 0 0 2.69 0 6c0 4.5 6 10 6 10s6-5.5 6-10c0-3.31-2.69-6-6-6zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"
@@ -88,6 +85,9 @@ export default function Home() {
           <span>Parramatta City Tennis, Barton St.</span>
         </div>
 
+        {/* Countdown */}
+        <Countdown targetDate="2026-08-02T08:00:00" />
+        
         {/* CTA */}
         <div className={styles.ctaBlock}>
           <a href="/competition" className={styles.ctaPrimary}>
@@ -96,6 +96,51 @@ export default function Home() {
               <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </a>
+        </div>
+
+        {/* Section divider */}
+        <div className={styles.sectionDivider}>
+          <span className={styles.divLine} />
+          <span className={styles.divDiamond} />
+          <span className={styles.divLine} />
+        </div>
+
+        {/* Info cards */}
+        <div className={styles.infoGrid}>
+          <div className={styles.infoCard}>
+            <span className={styles.icLabel}>Format</span>
+            <div className={styles.icTitle}>Teams of 6</div>
+            <p className={styles.icBody}>3 doubles pairings per school, competing across multiple rounds.</p>
+          </div>
+          <div className={styles.infoCard}>
+            <span className={styles.icLabel}>Edition</span>
+            <div className={styles.icTitle}>Third Edition</div>
+            <p className={styles.icBody}>The Sri Lankan Schools Invitational Tennis Competition returns for 2026.</p>
+          </div>
+        </div>
+
+        {/* Register banner */}
+        <div className={styles.registerBanner}>
+          <span className={styles.regEyebrow}>Open Now</span>
+          <div className={styles.regTitle}>Register Your Team</div>
+          <p className={styles.regBody}>
+            Teams of 6 players representing 3 doubles pairings from each school
+            are invited to register their interest.
+          </p>
+        </div>
+        
+        {/* Contacts */}
+        <div className={styles.contactGrid}>
+          <div className={styles.contactCard}>
+            <span className={styles.ccLabel}>Contact</span>
+            <div className={styles.ccName}>Sanj</div>
+            <div className={styles.ccPhone}>0401 254 200</div>
+          </div>
+          <div className={styles.contactCard}>
+            <span className={styles.ccLabel}>Contact</span>
+            <div className={styles.ccName}>Selvan</div>
+            <div className={styles.ccPhone}>0406 100 199</div>
+          </div>
         </div>
 
         {/* Tennis court decorative line */}
