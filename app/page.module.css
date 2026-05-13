@@ -258,3 +258,24 @@
   color: var(--gold);
   flex-shrink: 0;
 }
+
+/* Info grid */
+.infoGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 28px 0 0; width: 100%; max-width: 560px; }
+.infoCard { background: var(--cream-warm); border: 1px solid rgba(184,149,42,0.18); padding: 18px; }
+.icLabel { font-family: var(--font-accent); font-size: 9px; font-weight: 600; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); }
+.icTitle { font-family: var(--font-display); font-size: 13px; font-weight: 600; color: var(--navy); margin: 6px 0 4px; }
+.icBody  { font-family: var(--font-body); font-size: 13px; font-weight: 300; color: var(--text-secondary); line-height: 1.65; }
+
+/* Register banner */
+.registerBanner { width: 100%; max-width: 560px; background: var(--cream-warm); border: 1px solid rgba(184,149,42,0.18); padding: 24px 28px; margin-top: 14px; }
+.regEyebrow { font-family: var(--font-accent); font-size: 9px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); opacity: 0.75; }
+.regTitle { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--navy); margin: 8px 0 10px; }
+.regBody  { font-family: var(--font-body); font-size: 13px; font-weight: 300; color: var(--text-secondary); line-height: 1.65; margin-bottom: 16px; }
+.regBtn   { font-family: var(--font-accent); font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; padding: 11px 24px; background: var(--gold); color: var(--navy); border: none; cursor: pointer; }
+
+/* Contacts */
+.contactGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 14px 0 0; width: 100%; max-width: 560px; }
+.contactCard { background: var(--cream-warm); border: 1px solid rgba(184,149,42,0.18); padding: 14px 16px; }
+.ccLabel { font-family: var(--font-accent); font-size: 8px; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); opacity: 0.7; margin-bottom: 4px; }
+.ccName  { font-family: var(--font-display); font-size: 12px; font-weight: 600; color: var(--navy); }
+.ccPhone { font-family: var(--font-body); font-size: 14px; font-weight: 300; color: var(--text-secondary); }
