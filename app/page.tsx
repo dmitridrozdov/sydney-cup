@@ -75,7 +75,11 @@ export default function Home() {
           <span className={styles.dateValue}>August 2, 2026 · 8:00 AM</span>
         </div>
 
-         <div className={styles.venueBlock}>
+        <a href="https://maps.google.com/?q=Parramatta+City+Tennis+Barton+St+Parramatta"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.venueBlock}
+        >
           <svg width="12" height="16" viewBox="0 0 12 16" fill="none">
             <path
               d="M6 0C2.69 0 0 2.69 0 6c0 4.5 6 10 6 10s6-5.5 6-10c0-3.31-2.69-6-6-6zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"
@@ -83,7 +87,7 @@ export default function Home() {
             />
           </svg>
           <span>Parramatta City Tennis, Barton St.</span>
-        </div>
+        </a>
 
         {/* Countdown */}
         <Countdown targetDate="2026-08-02T08:00:00" />
