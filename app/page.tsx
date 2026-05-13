@@ -1,6 +1,7 @@
 import Countdown from "@/components/Countdown";
 import Navigation from "@/components/Navigation";
 import styles from "./page.module.css";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -22,7 +23,7 @@ export default function Home() {
 
         {/* Trophy icon */}
         <div className={styles.trophyWrap}>
-          <svg
+          {/* <svg
             className={styles.trophySvg}
             viewBox="0 0 80 90"
             fill="none"
@@ -47,7 +48,14 @@ export default function Home() {
                 <stop offset="100%" stopColor="#a07830" />
               </linearGradient>
             </defs>
-          </svg>
+          </svg> */}
+           <Image
+            src="/crest.png"
+            alt="Sydney Cup crest"
+            width={110}
+            height={172}
+            priority
+          />
         </div>
 
         {/* Title */}
@@ -58,7 +66,7 @@ export default function Home() {
             <span className={styles.versionText}>3.0</span>
             <span className={styles.accentLine} />
           </div>
-          <p className={styles.subtitle}>Doubles Tennis Championship</p>
+          <p className={styles.subtitle}>Doubles Tennis Championship | Organised by RCOBA in NSW and ACT</p>
         </div>
 
         {/* Date */}
@@ -69,6 +77,16 @@ export default function Home() {
 
         {/* Countdown */}
         <Countdown targetDate="2026-08-02T08:00:00" />
+        
+        <div className={styles.venueBlock}>
+          <svg width="12" height="16" viewBox="0 0 12 16" fill="none">
+            <path
+              d="M6 0C2.69 0 0 2.69 0 6c0 4.5 6 10 6 10s6-5.5 6-10c0-3.31-2.69-6-6-6zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"
+              fill="currentColor"
+            />
+          </svg>
+          <span>Parramatta City Tennis, Barton St.</span>
+        </div>
 
         {/* CTA */}
         <div className={styles.ctaBlock}>
