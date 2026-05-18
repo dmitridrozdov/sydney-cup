@@ -27,56 +27,56 @@ const timeSlots = [
   {
     slot: "Time Slot 1", time: "8:00 AM – 8:25 AM",
     matches: [
-      { id: "A1", t1: "Royal Blues", t2: "Hartley",     courts: "1, 2, 3", g1: 18, g2: 6  },
-      { id: "A2", t1: "Joes",        t2: "STC",         courts: "4, 5, 6", g1: 5,  g2: 19 },
-      { id: "B1", t1: "Royal Golds", t2: "Trinity",     courts: "7, 8, 9", g1: 13, g2: 11 },
-      { id: "B2", t1: "Hindu Golds", t2: "Ananda",      courts: "10–12",   g1: 10, g2: 14 },
+      { id: "A1", t1: "Royal Blues", t2: "Hartley",     courts: "1, 2, 3", g1: 18, g2: 6,  seeds: [[2,6],[8,0],[8,0]] },
+      { id: "A2", t1: "Joes",        t2: "STC",         courts: "4, 5, 6", g1: 5,  g2: 19, seeds: [[0,8],[1,7],[4,4]] },
+      { id: "B1", t1: "Royal Golds", t2: "Trinity",     courts: "7, 8, 9", g1: 13, g2: 11, seeds: [[3,5],[4,4],[6,2]] },
+      { id: "B2", t1: "Hindu Golds", t2: "Ananda",      courts: "10–12",   g1: 10, g2: 14, seeds: [[4,4],[6,2],[0,8]] },
     ],
   },
   {
     slot: "Time Slot 2", time: "8:35 AM – 9:00 AM",
     matches: [
-      { id: "A3", t1: "Hindu Blues", t2: "Joes",        courts: "1, 2, 3", g1: 14, g2: 10 },
-      { id: "A4", t1: "Hartley",     t2: "STC",         courts: "4, 5, 6", g1: 8,  g2: 16 },
-      { id: "B3", t1: "Ananda",      t2: "Trinity",     courts: "7, 8, 9", g1: 11, g2: 13 },
-      { id: "B4", t1: "Combined",    t2: "Royal Golds", courts: "10–12",   g1: 12, g2: 12 },
+      { id: "A3", t1: "Hindu Blues", t2: "Joes",        courts: "1, 2, 3", g1: 14, g2: 10, seeds: [[3,5],[5,3],[6,2]] },
+      { id: "A4", t1: "Hartley",     t2: "STC",         courts: "4, 5, 6", g1: 8,  g2: 16, seeds: [[0,8],[3,5],[5,3]] },
+      { id: "B3", t1: "Ananda",      t2: "Trinity",     courts: "7, 8, 9", g1: 11, g2: 13, seeds: [[3,5],[1,7],[7,1]] },
+      { id: "B4", t1: "Combined",    t2: "Royal Golds", courts: "10–12",   g1: 12, g2: 12, seeds: [[4,4],[3,5],[5,3]] },
     ],
   },
   {
     slot: "Time Slot 3", time: "9:10 AM – 9:35 AM",
     matches: [
-      { id: "A5", t1: "Royal Blues", t2: "Hindu Blues", courts: "1, 2, 3", g1: 20, g2: 4  },
-      { id: "A6", t1: "Joes",        t2: "Hartley",     courts: "4, 5, 6", g1: 6,  g2: 18 },
-      { id: "B5", t1: "Royal Golds", t2: "Hindu Golds", courts: "7, 8, 9", g1: 16, g2: 8  },
-      { id: "B6", t1: "Trinity",     t2: "Combined",    courts: "10–12",   g1: 6,  g2: 18 },
+      { id: "A5", t1: "Royal Blues", t2: "Hindu Blues", courts: "1, 2, 3", g1: 20, g2: 4,  seeds: [[6,2],[7,1],[7,1]] },
+      { id: "A6", t1: "Joes",        t2: "Hartley",     courts: "4, 5, 6", g1: 6,  g2: 18, seeds: [[5,3],[1,7],[0,8]] },
+      { id: "B5", t1: "Royal Golds", t2: "Hindu Golds", courts: "7, 8, 9", g1: 16, g2: 8,  seeds: [[7,1],[4,4],[5,3]] },
+      { id: "B6", t1: "Trinity",     t2: "Combined",    courts: "10–12",   g1: 6,  g2: 18, seeds: [[2,6],[4,4],[0,8]] },
     ],
   },
   {
     slot: "Time Slot 4", time: "9:45 AM – 10:10 AM",
     matches: [
-      { id: "A7", t1: "Royal Blues", t2: "Joes",        courts: "1, 2, 3", g1: 23, g2: 1  },
-      { id: "A8", t1: "Hindu Blues", t2: "STC",         courts: "4, 5, 6", g1: 14, g2: 10 },
-      { id: "B7", t1: "Hindu Golds", t2: "Combined",    courts: "7, 8, 9", g1: 10, g2: 14 },
-      { id: "B8", t1: "Royal Golds", t2: "Ananda",      courts: "10–12",   g1: 7,  g2: 17 },
+      { id: "A7", t1: "Royal Blues", t2: "Joes",        courts: "1, 2, 3", g1: 23, g2: 1,  seeds: [[8,0],[8,0],[7,1]] },
+      { id: "A8", t1: "Hindu Blues", t2: "STC",         courts: "4, 5, 6", g1: 14, g2: 10, seeds: [[1,7],[6,2],[7,1]] },
+      { id: "B7", t1: "Hindu Golds", t2: "Combined",    courts: "7, 8, 9", g1: 10, g2: 14, seeds: [[1,7],[7,1],[2,6]] },
+      { id: "B8", t1: "Royal Golds", t2: "Ananda",      courts: "10–12",   g1: 7,  g2: 17, seeds: [[5,3],[0,8],[2,6]] },
     ],
   },
   {
     slot: "Time Slot 5", time: "10:20 AM – 10:45 AM",
     matches: [
-      { id: "A9",  t1: "Royal Blues", t2: "STC",      courts: "1, 2, 3", g1: 16, g2: 8  },
-      { id: "A10", t1: "Hindu Blues", t2: "Hartley",  courts: "4, 5, 6", g1: 14, g2: 10 },
-      { id: "B9",  t1: "Hindu Golds", t2: "Trinity",  courts: "7, 8, 9", g1: 11, g2: 13 },
-      { id: "B10", t1: "Ananda",      t2: "Combined", courts: "10–12",   g1: 16, g2: 8  },
+      { id: "A9",  t1: "Royal Blues", t2: "STC",      courts: "1, 2, 3", g1: 16, g2: 8,  seeds: [[3,5],[6,2],[7,1]] },
+      { id: "A10", t1: "Hindu Blues", t2: "Hartley",  courts: "4, 5, 6", g1: 14, g2: 10, seeds: [[5,3],[4,4],[5,3]] },
+      { id: "B9",  t1: "Hindu Golds", t2: "Trinity",  courts: "7, 8, 9", g1: 11, g2: 13, seeds: [[5,3],[5,3],[1,7]] },
+      { id: "B10", t1: "Ananda",      t2: "Combined", courts: "10–12",   g1: 16, g2: 8,  seeds: [[2,6],[8,0],[6,2]] },
     ],
   },
 ];
 
 const semis = [
-  { id: "SF1", t1: "Royal Blues", t2: "Combined", courts: "1, 2, 3", g1: 18, g2: 2  },
-  { id: "SF2", t1: "Ananda",      t2: "STC",      courts: "4, 5, 6", g1: 8,  g2: 16 },
+  { id: "SF1", t1: "Royal Blues", t2: "Combined", courts: "1, 2, 3", g1: 18, g2: 2,  seeds: [[6,2],[8,0],[4,0]] },
+  { id: "SF2", t1: "Ananda",      t2: "STC",      courts: "4, 5, 6", g1: 8,  g2: 16, seeds: [[0,8],[5,3],[3,5]] },
 ];
 
-const final = { id: "Final", t1: "Royal Blues", t2: "STC", courts: "1, 2, 3", g1: 16, g2: 8 };
+const final = { id: "Final", t1: "Royal Blues", t2: "STC", courts: "1, 2, 3", g1: 16, g2: 8, seeds: [[1,7],[7,1],[8,0]] };
 
 export default function SydneyCup2() {
   return (
@@ -194,13 +194,27 @@ export default function SydneyCup2() {
                   return (
                     <div key={m.id} className={styles.matchRow}>
                       <span className={styles.matchId}>{m.id}</span>
-                      <span className={`${styles.teamName} ${t1w && !draw ? styles.winner : ""}`}>{m.t1}</span>
-                      <div className={styles.scoreBox}>
-                        <span className={t1w && !draw ? styles.scoreWin : styles.scoreLose}>{m.g1}</span>
-                        <span className={styles.scoreDash}>–</span>
-                        <span className={!t1w && !draw ? styles.scoreWin : styles.scoreLose}>{m.g2}</span>
+                      <div className={styles.matchMain}>
+                        <div className={styles.matchTeams}>
+                          <span className={`${styles.teamName} ${t1w && !draw ? styles.winner : ""}`}>{m.t1}</span>
+                          <div className={styles.scoreBox}>
+                            <span className={t1w && !draw ? styles.scoreWin : styles.scoreLose}>{m.g1}</span>
+                            <span className={styles.scoreDash}>–</span>
+                            <span className={!t1w && !draw ? styles.scoreWin : styles.scoreLose}>{m.g2}</span>
+                          </div>
+                          <span className={`${styles.teamName} ${styles.teamRight} ${!t1w && !draw ? styles.winner : ""}`}>{m.t2}</span>
+                        </div>
+                        <div className={styles.seedRow}>
+                          {m.seeds.map((s, i) => (
+                            <span key={i} className={styles.seedScore}>
+                              <span className={styles.seedLabel}>S{i + 1}</span>
+                              <span className={s[0] > s[1] ? styles.seedWin : styles.seedDim}>{s[0]}</span>
+                              <span className={styles.seedSep}>–</span>
+                              <span className={s[1] > s[0] ? styles.seedWin : styles.seedDim}>{s[1]}</span>
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                      <span className={`${styles.teamName} ${styles.teamRight} ${!t1w && !draw ? styles.winner : ""}`}>{m.t2}</span>
                       <span className={styles.courts}>Courts {m.courts}</span>
                     </div>
                   );
