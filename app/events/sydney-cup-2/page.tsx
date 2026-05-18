@@ -106,10 +106,10 @@ export default function SydneyCup2() {
               <span className={styles.metaValue}>25 min per match</span>
             </div>
             <div className={styles.metaDot} />
-            <div className={styles.metaItem}>
+            {/* <div className={styles.metaItem}>
               <span className={styles.metaLabel}>Courts</span>
               <span className={styles.metaValue}>12 courts · 4 matches per slot</span>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
@@ -215,7 +215,7 @@ export default function SydneyCup2() {
                           ))}
                         </div>
                       </div>
-                      <span className={styles.courts}>Courts {m.courts}</span>
+                      {/* <span className={styles.courts}>Courts {m.courts}</span> */}
                     </div>
                   );
                 })}
