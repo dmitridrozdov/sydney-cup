@@ -365,9 +365,10 @@
   font-weight: 300;
   color: var(--navy);
   opacity: 0.6;
-  white-space: nowrap;
+  min-width: 0;          /* allows grid cell to shrink properly */
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .teamRight { text-align: right; }
 .winner {
@@ -457,7 +458,6 @@
   .standingsGrid { grid-template-columns: 1fr; }
   .heroMeta { flex-direction: column; gap: 10px; }
   .metaDot { display: none; }
-  .matchRow { grid-template-columns: 28px 1fr auto 1fr; }
   .championBanner { flex-direction: column; align-items: center; text-align: center; }
   .championRight { align-items: center; }
 }
@@ -471,9 +471,10 @@
 }
 
 .matchTeams {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .seedRow {
