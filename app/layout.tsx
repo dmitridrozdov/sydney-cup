@@ -10,6 +10,10 @@ export const metadata: Metadata = {
     description: "Doubles Tennis Championship — August 2, 2026",
     type: "website",
   },
+  icons: {
+    icon: '/sydney_cup_icon.svg',
+    apple: '/apple-icon.png',
+  },
 };
 
 export default function RootLayout({
