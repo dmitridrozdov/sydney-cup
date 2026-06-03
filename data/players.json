@@ -1,0 +1,64 @@
+{
+  "schools": [
+    {
+      "id": "royal",
+      "name": "Royal College",
+      "group": "blue",
+      "seeds": [
+        { "seed": 1, "players": ["Player One", "Player Two"] },
+        { "seed": 2, "players": ["Player Three", "Player Four"] },
+        { "seed": 3, "players": ["Player Five", "Player Six"] }
+      ]
+    },
+    {
+      "id": "stc",
+      "name": "STC",
+      "group": "blue",
+      "seeds": [
+        { "seed": 1, "players": ["Player One", "Player Two"] },
+        { "seed": 2, "players": ["Player Three", "Player Four"] },
+        { "seed": 3, "players": ["Player Five", "Player Six"] }
+      ]
+    },
+    {
+      "id": "hindu",
+      "name": "Hindu College",
+      "group": "blue",
+      "seeds": [
+        { "seed": 1, "players": ["Player One", "Player Two"] },
+        { "seed": 2, "players": ["Player Three", "Player Four"] },
+        { "seed": 3, "players": ["Player Five", "Player Six"] }
+      ]
+    },
+    {
+      "id": "ananda",
+      "name": "Ananda College",
+      "group": "gold",
+      "seeds": [
+        { "seed": 1, "players": ["Player One", "Player Two"] },
+        { "seed": 2, "players": ["Player Three", "Player Four"] },
+        { "seed": 3, "players": ["Player Five", "Player Six"] }
+      ]
+    },
+    {
+      "id": "trinity",
+      "name": "Trinity College",
+      "group": "gold",
+      "seeds": [
+        { "seed": 1, "players": ["Player One", "Player Two"] },
+        { "seed": 2, "players": ["Player Three", "Player Four"] },
+        { "seed": 3, "players": ["Player Five", "Player Six"] }
+      ]
+    },
+    {
+      "id": "combined",
+      "name": "Combined",
+      "group": "gold",
+      "seeds": [
+        { "seed": 1, "players": ["Player One", "Player Two"] },
+        { "seed": 2, "players": ["Player Three", "Player Four"] },
+        { "seed": 3, "players": ["Player Five", "Player Six"] }
+      ]
+    }
+  ]
+}
