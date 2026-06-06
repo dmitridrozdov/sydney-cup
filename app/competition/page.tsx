@@ -26,12 +26,49 @@ function StatusDot({ status }: { status: string }) {
 
 export default function CompetitionPage() {
   const matches = useQuery(api.matches.getAll);
+  const standings = useQuery(api.matches.getStandings);
 
   const bySlot = (slot: string) =>
     (matches ?? []).filter((m) => m.timeSlot === slot);
 
   const semis  = (matches ?? []).filter((m) => m.phase === "semis");
   const finals = (matches ?? []).filter((m) => m.phase === "final");
+
+  const BLUE_GROUP = ["Royal Blues", "STC", "Hindu Blues", "Joes", "Hartley"];
+  const GOLD_GROUP = ["Ananda", "Combined", "Royal Golds", "Trinity", "Hindu Golds"];
+
+  function StandingsTable({ teams, label, color }: { teams: string[]; label: string; color: string }) {
+    const rows = teams
+      .map((t) => ({ team: t, games: standings?.[t] ?? 0 }))
+      .sort((a, b) => b.games - a.games);
+
+    return (
+      <div className={styles.standingCard}>
+        <div className={styles.groupHeader}>
+          <span className={styles.groupPip} style={{ background: color }} />
+          <span className={styles.groupName}>{label}</span>
+        </div>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Team</th>
+              <th>Games</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r, i) => (
+              <tr key={r.team} className={i < 2 ? styles.qualifiedRow : ""}>
+                <td className={styles.posCell}>{i + 1}</td>
+                <td className={styles.teamCell}>{r.team}</td>
+                <td className={styles.gamesCell}>{r.games || "–"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
 
   return (
     <main className={styles.main}>
@@ -175,6 +212,25 @@ export default function CompetitionPage() {
               </div>
             </div>
           ))}
+        </section>
+
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <span className={styles.sectionLabel}>Group Stage</span>
+            <h2 className={styles.sectionTitle}>Standings</h2>
+          </div>
+          <div className={styles.standingsGrid}>
+            <StandingsTable
+              teams={BLUE_GROUP}
+              label="Blue Group"
+              color="#3b6fd4"
+            />
+            <StandingsTable
+              teams={GOLD_GROUP}
+              label="Gold Group"
+              color="#b8952a"
+            />
+          </div>
         </section>
 
         {/* ── KNOCKOUTS ── */}
