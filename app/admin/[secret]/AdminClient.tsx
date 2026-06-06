@@ -11,16 +11,12 @@ type Props = { secret: string };
 
 export default function AdminClient({ secret }: Props) {
   const matches = useQuery(api.matches.getAll);
-  // ... rest unchanged
-
-  console.log("secret:", secret);
-  console.log("expected:", ADMIN_SECRET);
-  console.log("match:", secret === ADMIN_SECRET);
 
   const seedMatches   = useMutation(api.matches.seedMatches);
   const updateScore   = useMutation(api.matches.updateSeedScore);
   const updateStatus  = useMutation(api.matches.updateStatus);
   const updateTeams   = useMutation(api.matches.updateTeamNames);
+  const resetMatches  = useMutation(api.matches.resetMatches);
 
   const [seeding, setSeeding] = useState(false);
   const [saving,  setSaving]  = useState<string | null>(null);
@@ -45,6 +41,13 @@ export default function AdminClient({ secret }: Props) {
     flash((r as { message: string }).message);
     setSeeding(false);
   };
+
+  // Add handler alongside handleSeed
+    const handleReset = async () => {
+    if (!confirm("Reset ALL match scores? This cannot be undone.")) return;
+    const r = await resetMatches({});
+    flash((r as { message: string }).message);
+    };
 
   const handleScoreSave = async (matchId: string) => {
     const matchEdits = edits[matchId];
@@ -187,6 +190,9 @@ export default function AdminClient({ secret }: Props) {
           {msg && <span className={styles.flash}>{msg}</span>}
           <button className={styles.btnSeed} onClick={handleSeed} disabled={seeding}>
             {seeding ? "Seeding…" : "Seed Match Schedule"}
+          </button>
+          <button className={styles.btnReset} onClick={handleReset}>
+            Reset All Scores
           </button>
         </div>
       </div>
