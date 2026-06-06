@@ -214,3 +214,73 @@
   .matchRow { grid-template-columns: 28px 1fr auto; }
   .courts { display: none; }
 }
+
+.standingsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.standingCard {
+  background: var(--cream-warm);
+  border: 1px solid rgba(184,149,42,0.18);
+  padding: 16px;
+}
+.groupHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.groupPip {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.groupName {
+  font-family: var(--font-accent);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.7;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table th {
+  font-family: var(--font-accent);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.4;
+  text-align: left;
+  padding: 0 6px 8px;
+}
+.table td {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--navy);
+  padding: 7px 6px;
+  border-top: 1px solid rgba(184,149,42,0.1);
+}
+.qualifiedRow td { font-weight: 500; }
+.posCell { opacity: 0.35; font-size: 11px; width: 20px; }
+.teamCell { font-weight: 400; }
+.gamesCell {
+  text-align: right;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+@media (max-width: 480px) {
+  .standingsGrid { grid-template-columns: 1fr; }
+}
