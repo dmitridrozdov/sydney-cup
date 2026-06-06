@@ -178,3 +178,23 @@ export const getStandings = query({
     return totals;
   },
 });
+
+export const resetMatches = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const matches = await ctx.db.query("matches").collect();
+    for (const m of matches) {
+      await ctx.db.patch(m._id, {
+        seedScores: [
+          { seed: 1 },
+          { seed: 2 },
+          { seed: 3 },
+        ],
+        team1Total: undefined,
+        team2Total: undefined,
+        status: "pending",
+      });
+    }
+    return { message: `Reset ${matches.length} matches` };
+  },
+});
