@@ -156,3 +156,25 @@ export const updateTeamNames = mutation({
     await ctx.db.patch(match._id, { team1, team2 });
   },
 });
+
+export const getStandings = query({
+  args: {},
+  handler: async (ctx) => {
+    const matches = await ctx.db.query("matches")
+      .filter((q) => q.eq(q.field("phase"), "group"))
+      .collect();
+
+    // Accumulate games won per team
+    const totals: Record<string, number> = {};
+
+    for (const m of matches) {
+      if (m.status !== "complete") continue;
+      if (!totals[m.team1]) totals[m.team1] = 0;
+      if (!totals[m.team2]) totals[m.team2] = 0;
+      totals[m.team1] += m.team1Total ?? 0;
+      totals[m.team2] += m.team2Total ?? 0;
+    }
+
+    return totals;
+  },
+});
