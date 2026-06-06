@@ -129,3 +129,18 @@
   background: var(--cream); font-family: var(--font-body);
   color: var(--navy);
 }
+
+.btnReset {
+  font-family: var(--font-accent);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 9px 20px;
+  background: transparent;
+  color: #c0392b;
+  border: 1px solid #c0392b;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.btnReset:hover { background: #c0392b; color: #fff; }
