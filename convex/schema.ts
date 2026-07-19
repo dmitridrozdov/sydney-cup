@@ -17,9 +17,10 @@ export default defineSchema({
         team2Games: v.optional(v.number()),
       })
     ),
-    // Computed totals (updated by mutation)
     team1Total: v.optional(v.number()),
     team2Total: v.optional(v.number()),
+    team1Sets: v.optional(v.number()),
+    team2Sets: v.optional(v.number()),
     status: v.string(),        // "pending" | "in_progress" | "complete"
   }).index("by_matchId", ["matchId"])
     .index("by_timeSlot", ["timeSlot"]),
