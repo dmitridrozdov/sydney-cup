@@ -215,11 +215,8 @@
   .courts { display: none; }
 }
 
-.standingsGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
+.standingsGrid { display: block; }
+
 .standingCard {
   background: var(--cream-warm);
   border: 1px solid rgba(184,149,42,0.18);
@@ -283,4 +280,35 @@
 
 @media (max-width: 480px) {
   .standingsGrid { grid-template-columns: 1fr; }
+}
+
+.slotRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.byeTag {
+  font-family: var(--font-accent);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.5;
+  border: 1px solid rgba(184,149,42,0.2);
+  padding: 2px 8px;
+}
+
+.qualBadge {
+  font-family: var(--font-accent);
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--gold);
+  color: var(--navy);
+  padding: 2px 6px;
+  margin-left: 8px;
+  vertical-align: middle;
 }
