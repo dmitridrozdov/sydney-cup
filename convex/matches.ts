@@ -212,3 +212,42 @@ export const resetMatches = mutation({
     return { message: `Reset ${matches.length} matches` };
   },
 });
+
+export const setFinalTeamsFromStandings = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const standings = await ctx.db.query("matches")
+      .filter((q) => q.eq(q.field("phase"), "group"))
+      .collect();
+
+    // Accumulate sets and games per team
+    const stats: Record<string, { sets: number; games: number }> = {};
+    for (const m of standings) {
+      if (m.status !== "complete") continue;
+      if (!stats[m.team1]) stats[m.team1] = { sets: 0, games: 0 };
+      if (!stats[m.team2]) stats[m.team2] = { sets: 0, games: 0 };
+      stats[m.team1].sets  += m.team1Sets  ?? 0;
+      stats[m.team2].sets  += m.team2Sets  ?? 0;
+      stats[m.team1].games += m.team1Total ?? 0;
+      stats[m.team2].games += m.team2Total ?? 0;
+    }
+
+    const ranked = Object.entries(stats)
+      .sort(([, a], [, b]) => b.sets - a.sets || b.games - a.games);
+
+    if (ranked.length < 2) throw new Error("Not enough completed matches to determine finalists");
+
+    const rank1 = ranked[0][0];
+    const rank2 = ranked[1][0];
+
+    const final = await ctx.db.query("matches")
+      .filter((q) => q.eq(q.field("phase"), "final"))
+      .first();
+
+    if (!final) throw new Error("Final match not found");
+
+    await ctx.db.patch(final._id, { team1: rank1, team2: rank2 });
+
+    return { message: `Final set: ${rank1} vs ${rank2}` };
+  },
+});
