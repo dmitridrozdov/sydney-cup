@@ -26,6 +26,7 @@ export default function AdminClient({ secret }: Props) {
   const updateScore  = useMutation(api.matches.updateSeedScore);
   const updateStatus = useMutation(api.matches.updateStatus);
   const updateTeams  = useMutation(api.matches.updateTeamNames);
+  const setFinalTeams = useMutation(api.matches.setFinalTeamsFromStandings);
 
   const [seeding, setSeeding] = useState(false);
   const [saving,  setSaving]  = useState<string | null>(null);
@@ -49,6 +50,16 @@ export default function AdminClient({ secret }: Props) {
     const r = await seedMatches({});
     flash((r as { message: string }).message);
     setSeeding(false);
+  };
+
+
+  const handleSetFinalTeams = async () => {
+    try {
+      const r = await setFinalTeams({});
+      flash((r as { message: string }).message);
+    } catch (e: unknown) {
+      flash(e instanceof Error ? e.message : "Error setting final teams");
+    }
   };
 
   const handleReset = async () => {
@@ -174,104 +185,87 @@ export default function AdminClient({ secret }: Props) {
     );
   };
 
-  // ── Final section ────────────────────────────────────────────────
-  const FinalSection = () => {
-    const finalMatches = (matches ?? []).filter((m) => m.phase === "final");
-    return (
-      <div className={styles.phaseBlock}>
-        <div className={styles.phaseHeader}>
-          <h2 className={styles.phaseTitle}>Grand Final</h2>
-          <span className={styles.phaseTime}>12:05 PM – 12:30 PM</span>
-        </div>
-        {finalMatches.map((m) => {
-          const te = teamEdits[m.matchId] ?? [m.team1, m.team2];
-          return (
-            <div key={m.matchId} className={styles.matchCard}>
-              <div className={styles.matchCardHeader}>
-                <span className={styles.matchCardId}>{m.matchId}</span>
-                <div className={styles.teamEditorRow}>
-                  <input
-                    className={styles.teamInput}
-                    value={te[0]}
-                    onChange={(e) =>
-                      setTeamEdits((p) => ({ ...p, [m.matchId]: [e.target.value, te[1]] }))
-                    }
-                    placeholder="Rank 1 team"
-                  />
-                  <span className={styles.vs}>vs</span>
-                  <input
-                    className={styles.teamInput}
-                    value={te[1]}
-                    onChange={(e) =>
-                      setTeamEdits((p) => ({ ...p, [m.matchId]: [te[0], e.target.value] }))
-                    }
-                    placeholder="Rank 2 team"
-                  />
-                  <button className={styles.btnSm} onClick={() => handleTeamSave(m.matchId)}>
-                    Set Teams
-                  </button>
-                </div>
-                <select
-                  className={styles.statusSelect}
-                  value={m.status}
-                  onChange={(e) => updateStatus({
-                    matchId: m.matchId,
-                    status: e.target.value as "pending" | "in_progress" | "complete",
-                  })}
-                >
-                  <option value="pending">Pending</option>
-                  <option value="in_progress">In Progress</option>
-                  <option value="complete">Complete</option>
-                </select>
-              </div>
-
-              <div className={styles.seedsGrid}>
-                {m.seedScores.map((s) => {
-                  const cur = edits[m.matchId]?.[s.seed] ?? [
-                    s.team1Games?.toString() ?? "",
-                    s.team2Games?.toString() ?? "",
-                  ];
-                  return (
-                    <div key={s.seed} className={styles.seedRow}>
-                      <span className={styles.seedLbl}>S{s.seed}</span>
-                      <input
-                        type="number" min="0" max="8"
-                        className={styles.scoreInput}
-                        value={cur[0]}
-                        onChange={(e) => setEdit(m.matchId, s.seed, 0, e.target.value)}
-                        placeholder="–"
-                      />
-                      <span className={styles.dash}>–</span>
-                      <input
-                        type="number" min="0" max="8"
-                        className={styles.scoreInput}
-                        value={cur[1]}
-                        onChange={(e) => setEdit(m.matchId, s.seed, 1, e.target.value)}
-                        placeholder="–"
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className={styles.matchCardFooter}>
-                <span className={styles.totals}>
-                  Total: {m.team1Total ?? "–"} – {m.team2Total ?? "–"}
-                </span>
-                <button
-                  className={styles.btnSave}
-                  onClick={() => handleScoreSave(m.matchId)}
-                  disabled={saving === m.matchId}
-                >
-                  {saving === m.matchId ? "Saving…" : "Save Scores"}
-                </button>
-              </div>
-            </div>
-          );
-        })}
+// ── Final section ────────────────────────────────────────────────
+const FinalSection = () => {
+  const finalMatches = (matches ?? []).filter((m) => m.phase === "final");
+  return (
+    <div className={styles.phaseBlock}>
+      <div className={styles.phaseHeader}>
+        <h2 className={styles.phaseTitle}>Grand Final</h2>
+        <span className={styles.phaseTime}>12:05 PM – 12:30 PM</span>
       </div>
-    );
-  };
+      {finalMatches.map((m) => {
+        return (
+          <div key={m.matchId} className={styles.matchCard}>
+            <div className={styles.matchCardHeader}>
+              <span className={styles.matchCardId}>{m.matchId}</span>
+              <span className={styles.matchCardTeams}>
+                {m.team1} vs {m.team2}
+              </span>
+              <button className={styles.btnSm} onClick={handleSetFinalTeams}>
+                Auto-set from Standings
+              </button>
+              <select
+                className={styles.statusSelect}
+                value={m.status}
+                onChange={(e) => updateStatus({
+                  matchId: m.matchId,
+                  status: e.target.value as "pending" | "in_progress" | "complete",
+                })}
+              >
+                <option value="pending">Pending</option>
+                <option value="in_progress">In Progress</option>
+                <option value="complete">Complete</option>
+              </select>
+            </div>
+
+            <div className={styles.seedsGrid}>
+              {m.seedScores.map((s) => {
+                const cur = edits[m.matchId]?.[s.seed] ?? [
+                  s.team1Games?.toString() ?? "",
+                  s.team2Games?.toString() ?? "",
+                ];
+                return (
+                  <div key={s.seed} className={styles.seedRow}>
+                    <span className={styles.seedLbl}>S{s.seed}</span>
+                    <input
+                      type="number" min="0" max="8"
+                      className={styles.scoreInput}
+                      value={cur[0]}
+                      onChange={(e) => setEdit(m.matchId, s.seed, 0, e.target.value)}
+                      placeholder="–"
+                    />
+                    <span className={styles.dash}>–</span>
+                    <input
+                      type="number" min="0" max="8"
+                      className={styles.scoreInput}
+                      value={cur[1]}
+                      onChange={(e) => setEdit(m.matchId, s.seed, 1, e.target.value)}
+                      placeholder="–"
+                    />
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className={styles.matchCardFooter}>
+              <span className={styles.totals}>
+                Total: {m.team1Total ?? "–"} – {m.team2Total ?? "–"}
+              </span>
+              <button
+                className={styles.btnSave}
+                onClick={() => handleScoreSave(m.matchId)}
+                disabled={saving === m.matchId}
+              >
+                {saving === m.matchId ? "Saving…" : "Save Scores"}
+              </button>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
   // ── Render ───────────────────────────────────────────────────────
   return (
