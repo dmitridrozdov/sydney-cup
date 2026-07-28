@@ -109,13 +109,11 @@
 }
 
 .title {
-  font-family: 'Alfa Slab One', serif;  /* or 'Alfa Slab One' for Option 2 */
-  font-weight: 400;                    /* Cooper Black is a single-weight face */
-  font-size: clamp(40px, 7vw, 80px);  /* bump up slightly — it runs smaller */
-  letter-spacing: -0.01em;    
-  font-weight: 800;
+  font-size: clamp(36px, 6.5vw, 72px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
   line-height: 1;
-  color: var(--navy);
+  color: var(--text);
 }
 
 .titleAccent {
