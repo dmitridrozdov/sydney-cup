@@ -7,8 +7,6 @@
   justify-content: space-between;
   padding: 0 40px;
   height: 60px;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
   background: rgba(15, 26, 46, 0.97);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -23,24 +21,22 @@
 }
 
 .logoText {
-  font-family: var(--font-display);
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.01em;
-  color: var(--navy);
+  color: var(--gold2);
 }
 
 .logoDivider {
-  color: rgba(184,149,42,0.3);
+  color: var(--border2);
   font-weight: 200;
   font-size: 14px;
 }
 
 .logoSub {
-  font-family: var(--font-accent);
   font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.22em;
+  font-weight: 500;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--gold);
 }
@@ -52,12 +48,11 @@
 }
 
 .link {
-  font-family: var(--font-accent);
   font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.2em;
+  font-weight: 500;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--navy);
+  color: var(--text2);
   text-decoration: none;
   background: none;
   border: none;
@@ -66,8 +61,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  opacity: 0.55;
-  transition: opacity 0.2s;
+  transition: color 0.2s;
   position: relative;
 }
 
@@ -81,7 +75,7 @@
   transition: transform 0.22s ease;
 }
 
-.link:hover { opacity: 1; }
+.link:hover { color: var(--gold); }
 .link:hover::after { transform: scaleX(1); }
 
 .chevron, .chevronOpen {
@@ -97,9 +91,9 @@
   top: calc(100% + 14px);
   right: 0;
   min-width: 190px;
-  background: var(--cream);
-  border: 1px solid rgba(184,149,42,0.18);
-  box-shadow: 0 16px 40px rgba(10,22,40,0.1);
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.4);
   padding: 6px 0;
   animation: dropIn 0.18s ease;
 }
@@ -112,24 +106,21 @@
 .dropdownItem {
   display: block;
   padding: 10px 20px;
-  font-family: var(--font-accent);
   font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.18em;
+  font-weight: 500;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--navy);
+  color: var(--text2);
   text-decoration: none;
-  opacity: 0.55;
-  transition: opacity 0.18s, background 0.18s, color 0.18s;
+  transition: background 0.18s, color 0.18s;
 }
 
 .dropdownItem:hover {
-  opacity: 1;
-  background: rgba(184,149,42,0.05);
+  background: var(--bg3);
   color: var(--gold);
 }
 
-/* Mobile */
+/* Mobile hamburger */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -144,7 +135,7 @@
   display: block;
   width: 22px;
   height: 1.5px;
-  background: var(--navy);
+  background: var(--text2);
   transition: transform 0.22s ease, opacity 0.22s ease;
 }
 
@@ -152,11 +143,12 @@
 .barOpen2 { opacity: 0; }
 .barOpen3 { transform: translateY(-6.5px) rotate(-45deg); }
 
+/* Mobile menu */
 .mobileMenu {
   position: fixed;
   top: 60px; left: 0; right: 0;
-  background: var(--cream);
-  border-bottom: 1px solid rgba(184,149,42,0.15);
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
   padding: 14px 0 20px;
   display: flex;
   flex-direction: column;
@@ -171,34 +163,30 @@
 
 .mobileLink {
   padding: 12px 32px;
-  font-family: var(--font-accent);
   font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.2em;
+  font-weight: 500;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--navy);
+  color: var(--text2);
   text-decoration: none;
-  opacity: 0.6;
-  transition: opacity 0.18s, color 0.18s;
+  transition: color 0.18s;
 }
 
-.mobileLink:hover { opacity: 1; color: var(--gold); }
+.mobileLink:hover { color: var(--gold); }
 
 .mobileDivider {
   height: 1px;
-  background: rgba(184,149,42,0.15);
+  background: var(--border);
   margin: 8px 32px;
 }
 
 .mobileSectionLabel {
   padding: 0 32px 6px;
-  font-family: var(--font-accent);
   font-size: 8px;
-  font-weight: 600;
-  letter-spacing: 0.3em;
+  font-weight: 500;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: var(--gold);
-  opacity: 0.6;
+  color: var(--text3);
 }
 
 @media (max-width: 640px) {
