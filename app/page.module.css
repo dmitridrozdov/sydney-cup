@@ -189,9 +189,9 @@
   align-items: center;
   gap: 10px;
   padding: 14px 36px;
-  background: var(--gold);
-  color: var(--navy);
-  border: 1px solid rgba(184,149,42,0.5);
+  background: var(--bg2);
+  color: var(--gold);
+  border: 1px solid var(--border2);
   font-family: var(--font-accent);
   font-size: 11px;
   font-weight: 600;
@@ -208,13 +208,13 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+  background: var(--bg3);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
 .ctaPrimary:hover::before { opacity: 1; }
-.ctaPrimary:hover { color: var(--navy); border-color: var(--gold); }
+.ctaPrimary:hover { color: var(--gold2); border-color: var(--gold); }
 .ctaPrimary span,
 .ctaPrimary svg { position: relative; z-index: 1; }
 
