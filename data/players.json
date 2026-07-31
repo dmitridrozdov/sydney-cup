@@ -1,11 +1,67 @@
 {
   "schools": [
-    { "id": "royal",   "name": "Royal Blues",  "seeds": [{"seed":1,"players":["TBA","TBA"]},{"seed":2,"players":["TBA","TBA"]},{"seed":3,"players":["TBA","TBA"]}] },
-    { "id": "joes",    "name": "Joes",          "seeds": [{"seed":1,"players":["TBA","TBA"]},{"seed":2,"players":["TBA","TBA"]},{"seed":3,"players":["TBA","TBA"]}] },
-    { "id": "stc",     "name": "STC",           "seeds": [{"seed":1,"players":["TBA","TBA"]},{"seed":2,"players":["TBA","TBA"]},{"seed":3,"players":["TBA","TBA"]}] },
-    { "id": "trinity", "name": "Trinity",       "seeds": [{"seed":1,"players":["TBA","TBA"]},{"seed":2,"players":["TBA","TBA"]},{"seed":3,"players":["TBA","TBA"]}] },
-    { "id": "ananda",  "name": "Ananda",        "seeds": [{"seed":1,"players":["TBA","TBA"]},{"seed":2,"players":["TBA","TBA"]},{"seed":3,"players":["TBA","TBA"]}] },
-    { "id": "combined","name": "Combined",      "seeds": [{"seed":1,"players":["TBA","TBA"]},{"seed":2,"players":["TBA","TBA"]},{"seed":3,"players":["TBA","TBA"]}] },
-    { "id": "rgolds",  "name": "Royal Golds",   "seeds": [{"seed":1,"players":["TBA","TBA"]},{"seed":2,"players":["TBA","TBA"]},{"seed":3,"players":["TBA","TBA"]}] }
+    {
+      "id": "royal-blues",
+      "name": "Royal Blues",
+      "seeds": [
+        { "seed": 1, "players": ["Neshan Dias", "Vivek Pethiyagoda"] },
+        { "seed": 2, "players": ["Sasith Wickramasinghe", "Vineth Dharmarathna"] },
+        { "seed": 3, "players": ["Brin Baskaran", "Manilka Wickramaratne"] }
+      ]
+    },
+    {
+      "id": "royal-golds",
+      "name": "Royal Golds",
+      "seeds": [
+        { "seed": 1, "players": ["Sanjeewa Karunatilake", "Yohan Amith"] },
+        { "seed": 2, "players": ["Uthayan Kanagasabai", "Darshan Costa"] },
+        { "seed": 3, "players": ["Ravi Wijayasinghe", "Tharindu Pinnaduwage"] }
+      ]
+    },
+    {
+      "id": "stc",
+      "name": "STC",
+      "seeds": [
+        { "seed": 1, "players": ["Kohulan Ravi", "Shavin Samaranayake"] },
+        { "seed": 2, "players": ["Hamza Hussein", "Samuel Arulampalam"] },
+        { "seed": 3, "players": ["Chitran Duraisamy", "Noel Arulanantham"] }
+      ]
+    },
+    {
+      "id": "trinity",
+      "name": "Trinity",
+      "seeds": [
+        { "seed": 1, "players": ["Ishantha Samarasinghe", "Ganesh Suntharam"] },
+        { "seed": 2, "players": ["Niranjan Tilekeratne", "Manuka Tillekeratne"] },
+        { "seed": 3, "players": ["David Muthumani", "Anuruddha Navaratne"] }
+      ]
+    },
+    {
+      "id": "ananda",
+      "name": "Ananda",
+      "seeds": [
+        { "seed": 1, "players": ["Pasindu Aluthwala", "Samitha Ranaweera"] },
+        { "seed": 2, "players": ["Duminda Amarasinghe", "Chinthana Jayasekara"] },
+        { "seed": 3, "players": ["Vinura Palihakkara", "Nadika Korala"] }
+      ]
+    },
+    {
+      "id": "joes",
+      "name": "Joes",
+      "seeds": [
+        { "seed": 1, "players": ["Sudesh Weerasingha", "Hasaranga Fonseka"] },
+        { "seed": 2, "players": ["Reyaz Jeffrey", "Zal Jeffrey"] },
+        { "seed": 3, "players": ["Roger Isaacs", "Upeka Perera"] }
+      ]
+    },
+    {
+      "id": "combined",
+      "name": "Combined",
+      "seeds": [
+        { "seed": 1, "players": ["Thushy Sathi", "Hari Shan"] },
+        { "seed": 2, "players": ["Dmytri D", "Ravi Gunathilake"] },
+        { "seed": 3, "players": ["Nishantha Weerasuriya", "Abey Rajapaksa"] }
+      ]
+    }
   ]
 }
