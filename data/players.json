@@ -20,7 +20,7 @@
     },
     {
       "id": "stc",
-      "name": "STC",
+      "name": "S Thomas' College",
       "seeds": [
         { "seed": 1, "players": ["Kohulan Ravi", "Shavin Samaranayake"] },
         { "seed": 2, "players": ["Hamza Hussein", "Samuel Arulampalam"] },
@@ -29,25 +29,25 @@
     },
     {
       "id": "trinity",
-      "name": "Trinity",
+      "name": "Trinity College",
       "seeds": [
-        { "seed": 1, "players": ["Ishantha Samarasinghe", "Ganesh Suntharam"] },
-        { "seed": 2, "players": ["Niranjan Tilekeratne", "Manuka Tillekeratne"] },
+        { "seed": 1, "players": ["Niranjan Tilekeratne", "Manuka Tillekeratne"] },
+        { "seed": 2, "players": ["Ishantha Samarasinghe", "Iynkaran Maheswaran"] },
         { "seed": 3, "players": ["David Muthumani", "Anuruddha Navaratne"] }
       ]
     },
     {
       "id": "ananda",
-      "name": "Ananda",
+      "name": "Ananda College",
       "seeds": [
         { "seed": 1, "players": ["Pasindu Aluthwala", "Samitha Ranaweera"] },
-        { "seed": 2, "players": ["Duminda Amarasinghe", "Chinthana Jayasekara"] },
-        { "seed": 3, "players": ["Vinura Palihakkara", "Nadika Korala"] }
+        { "seed": 2, "players": ["Kaveenga Wijayasekara", "Vinura Palihakkara"] },
+        { "seed": 3, "players": ["Duminda Amarasinghe", "Chinthana Jayasekara"] }
       ]
     },
     {
       "id": "joes",
-      "name": "Joes",
+      "name": "Old Josephians",
       "seeds": [
         { "seed": 1, "players": ["Sudesh Weerasingha", "Hasaranga Fonseka"] },
         { "seed": 2, "players": ["Reyaz Jeffrey", "Zal Jeffrey"] },
@@ -59,7 +59,7 @@
       "name": "Combined",
       "seeds": [
         { "seed": 1, "players": ["Thushy Sathi", "Hari Shan"] },
-        { "seed": 2, "players": ["Dmytri D", "Ravi Gunathilake"] },
+        { "seed": 2, "players": ["Dmytro D", "Ravi Gunathilake"] },
         { "seed": 3, "players": ["Nishantha Weerasuriya", "Abey Rajapaksa"] }
       ]
     }
