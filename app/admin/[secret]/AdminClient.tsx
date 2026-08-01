@@ -277,9 +277,9 @@ const FinalSection = () => {
         </div>
         <div className={styles.topActions}>
           {msg && <span className={styles.flash}>{msg}</span>}
-          <button className={styles.btnReset} onClick={handleReset}>
+          {/* <button className={styles.btnReset} onClick={handleReset}>
             Reset All Scores
-          </button>
+          </button> */}
           {/* <button className={styles.btnSeed} onClick={handleSeed} disabled={seeding}>
             {seeding ? "Seeding…" : "Seed Match Schedule"}
           </button> */}
