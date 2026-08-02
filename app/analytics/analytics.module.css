@@ -74,8 +74,7 @@
   letter-spacing: -0.01em; color: var(--gold2);
 }
 .champRunnerUp {
-  font-size: clamp(0.9rem, 2vw, 1.2rem); font-weight: 500;
-  color: var(--text2);
+  font-size: clamp(0.9rem, 2vw, 1.2rem); font-weight: 500; color: var(--text2);
 }
 .champScore {
   font-size: 1.5rem; font-weight: 700; color: var(--gold3); letter-spacing: 0.05em;
@@ -97,8 +96,7 @@
   gap: 12px;
 }
 .statCard {
-  background: var(--bg2); border: 1px solid var(--border);
-  padding: 18px 16px;
+  background: var(--bg2); border: 1px solid var(--border); padding: 18px 16px;
 }
 .statValue {
   font-size: 1.6rem; font-weight: 700; color: var(--gold2);
@@ -114,10 +112,7 @@
 
 /* ── TABLE ── */
 .tableWrap { overflow-x: auto; }
-.table {
-  width: 100%; border-collapse: collapse;
-  font-size: 0.8125rem;
-}
+.table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; }
 .table th {
   font-size: 0.5rem; font-weight: 500; letter-spacing: 0.18em;
   text-transform: uppercase; color: var(--text3);
@@ -135,13 +130,10 @@
 .setsCell { color: var(--gold); font-weight: 600; }
 .diffPos { color: var(--green-light); font-weight: 500; }
 .diffNeg { color: var(--red); opacity: 0.8; }
-.winPctCell {
-  display: flex; align-items: center; gap: 8px; min-width: 100px;
-}
+.winPctCell { display: flex; align-items: center; gap: 8px; min-width: 100px; }
 .badge {
   font-size: 0.4375rem; font-weight: 700; letter-spacing: 0.12em;
-  text-transform: uppercase; padding: 2px 6px; margin-left: 8px;
-  vertical-align: middle;
+  text-transform: uppercase; padding: 2px 6px; margin-left: 8px; vertical-align: middle;
 }
 .badge[data-type="champion"] { background: var(--gold); color: var(--bg); }
 .badge[data-type="finalist"] { border: 1px solid var(--border2); color: var(--text3); }
@@ -151,25 +143,26 @@
   flex: 1; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden;
 }
 .barFill {
-  height: 100%; background: var(--text3); border-radius: 2px;
-  transition: width 0.6s ease;
+  height: 100%; border-radius: 2px; transition: width 0.6s ease;
 }
-.barFillGold {
-  height: 100%; background: var(--gold); border-radius: 2px;
-  transition: width 0.6s ease;
-}
-.barFillRed {
-  height: 100%; background: var(--red); border-radius: 2px; opacity: 0.7;
-  transition: width 0.6s ease;
-}
+.barFill_gold { background: var(--gold); }
+.barFill_green { background: var(--green-light); }
+.barFill_red { background: var(--red); opacity: 0.7; }
+
 .barsSection { display: flex; flex-direction: column; gap: 14px; }
 .barRow {
-  display: grid; grid-template-columns: 140px 1fr;
+  display: grid; grid-template-columns: 160px 1fr;
   align-items: center; gap: 16px;
 }
-.barTeam {
+.barTeam { overflow: hidden; }
+.barTeamName {
   font-size: 0.75rem; font-weight: 500; color: var(--text2);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.barTeamPlayers {
+  font-size: 0.625rem; font-weight: 300; color: var(--text3);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-top: 2px;
 }
 .barPair { display: flex; flex-direction: column; gap: 5px; }
 .barPairRow { display: flex; align-items: center; gap: 8px; }
@@ -185,10 +178,8 @@
 }
 .barSingle { display: flex; align-items: center; gap: 8px; }
 
-/* ── SEED CARDS ── */
-.seedGrid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
-}
+/* ── GLOBAL SEED CARDS ── */
+.seedGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 .seedCard {
   background: var(--bg2); border: 1px solid var(--border); padding: 20px;
   display: flex; flex-direction: column; gap: 6px;
@@ -201,19 +192,112 @@
   font-size: 2.4rem; font-weight: 700; color: var(--gold2);
   letter-spacing: -0.03em; line-height: 1;
 }
-.seedCardLabel {
-  font-size: 0.6875rem; font-weight: 300; color: var(--text2);
-}
+.seedCardLabel { font-size: 0.6875rem; font-weight: 300; color: var(--text2); }
 .seedCardBar {
-  height: 4px; background: var(--border); border-radius: 2px;
-  overflow: hidden; margin-top: 8px;
+  height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; margin-top: 8px;
 }
 .seedCardFill {
-  height: 100%; background: var(--gold); border-radius: 2px;
-  transition: width 0.6s ease;
+  height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.6s ease;
 }
-.seedCardPct {
-  font-size: 0.625rem; font-weight: 500; color: var(--gold); opacity: 0.7;
+.seedCardPct { font-size: 0.625rem; font-weight: 500; color: var(--gold); opacity: 0.7; }
+
+/* ── PER-TEAM SEED BREAKDOWN ── */
+.teamSeedGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 16px;
+}
+.teamSeedCard {
+  background: var(--bg2); border: 1px solid var(--border);
+}
+.teamSeedHeader {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg3);
+}
+.teamSeedName {
+  font-size: 0.8125rem; font-weight: 700; color: var(--gold2); letter-spacing: -0.01em;
+}
+.teamSeedSeeds { padding: 0; }
+
+.seedDetail {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.seedDetail:last-child { border-bottom: none; }
+
+.seedDetailHeader {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap;
+}
+.seedDetailNum {
+  font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--gold); opacity: 0.7;
+  background: var(--bg3); border: 1px solid var(--border2);
+  padding: 2px 7px; flex-shrink: 0;
+}
+.seedDetailPlayers {
+  font-size: 0.75rem; font-weight: 400; color: var(--text); flex: 1; min-width: 0;
+}
+.seedDetailRecord {
+  font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.05em;
+  color: var(--text2); flex-shrink: 0;
+}
+.recordPos { color: var(--green-light); }
+.recordNeg { color: var(--red); }
+
+.seedDetailBarRow {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+}
+.seedDetailPct {
+  font-size: 0.6875rem; font-weight: 600; color: var(--text2); width: 36px; text-align: right;
+}
+
+.seedDetailStats {
+  display: flex; gap: 16px; margin-bottom: 10px; flex-wrap: wrap;
+}
+.seedDetailStat { display: flex; flex-direction: column; gap: 2px; }
+.seedDetailStatLbl {
+  font-size: 0.4375rem; font-weight: 500; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--text3);
+}
+.seedDetailStatVal {
+  font-size: 0.875rem; font-weight: 600; color: var(--text2);
+}
+
+/* Per-seed match list */
+.seedMatchList { display: flex; flex-direction: column; gap: 3px; }
+.seedMatchRow {
+  display: grid; grid-template-columns: 48px 1fr auto auto;
+  align-items: center; gap: 6px;
+  padding: 5px 8px;
+  border-radius: 2px;
+  font-size: 0.6875rem;
+}
+.seedMatchWon { background: rgba(125,209,110,0.06); }
+.seedMatchLost { background: rgba(255,107,74,0.05); }
+.seedMatchId {
+  font-size: 0.5rem; font-weight: 700; letter-spacing: 0.1em;
+  color: var(--text3);
+}
+.seedMatchOpp { font-weight: 300; color: var(--text2); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.seedMatchScore { display: flex; align-items: center; gap: 3px; flex-shrink: 0; }
+.seedScoreWin { font-weight: 700; color: var(--gold2); }
+.seedScoreLose { font-weight: 300; color: var(--text3); }
+.seedScoreDash { color: var(--border2); font-size: 0.5625rem; }
+.seedMatchResult {
+  font-size: 0.5625rem; font-weight: 700; letter-spacing: 0.1em;
+  width: 18px; text-align: center; flex-shrink: 0;
+}
+.seedResultW { color: var(--green-light); }
+.seedResultL { color: var(--red); opacity: 0.7; }
+
+/* ── SEED COMPARE BLOCKS ── */
+.seedCompareBlock { margin-bottom: 28px; }
+.seedCompareTitle {
+  font-size: 0.625rem; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--gold); opacity: 0.7;
+  margin-bottom: 10px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
 }
 
 /* ── ALL MATCHES ── */
@@ -227,8 +311,7 @@
 }
 .resultRowFinal { border-color: var(--gold); background: rgba(212,180,74,0.04); }
 .resultId {
-  font-size: 0.5rem; font-weight: 700; letter-spacing: 0.1em;
-  color: var(--gold); opacity: 0.6;
+  font-size: 0.5rem; font-weight: 700; letter-spacing: 0.1em; color: var(--gold); opacity: 0.6;
 }
 .resultTeam {
   font-size: 0.8125rem; font-weight: 300; color: var(--text2);
@@ -236,21 +319,11 @@
 }
 .resultTeamRight { text-align: right; }
 .resultWinner { font-weight: 500; color: var(--text); }
-.resultScore {
-  display: flex; align-items: center; gap: 4px; flex-shrink: 0; justify-content: center;
-}
-.scoreWin {
-  font-size: 0.9375rem; font-weight: 700; color: var(--gold2);
-  min-width: 18px; text-align: center;
-}
-.scoreLose {
-  font-size: 0.9375rem; font-weight: 300; color: var(--text3);
-  min-width: 18px; text-align: center;
-}
+.resultScore { display: flex; align-items: center; gap: 4px; flex-shrink: 0; justify-content: center; }
+.scoreWin { font-size: 0.9375rem; font-weight: 700; color: var(--gold2); min-width: 18px; text-align: center; }
+.scoreLose { font-size: 0.9375rem; font-weight: 300; color: var(--text3); min-width: 18px; text-align: center; }
 .scoreDash { font-size: 0.6875rem; color: var(--border2); }
-.resultSeeds {
-  display: flex; gap: 8px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end;
-}
+.resultSeeds { display: flex; gap: 8px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
 .resultSeed { display: flex; align-items: center; gap: 2px; }
 .resultSeedLbl {
   font-size: 0.4375rem; font-weight: 700; letter-spacing: 0.1em;
@@ -261,11 +334,12 @@
 .seedDash { font-size: 0.5625rem; color: var(--border2); }
 
 /* ── RESPONSIVE ── */
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .championCard { flex-direction: column; align-items: center; text-align: center; }
   .championRight { align-items: center; }
   .seedGrid { grid-template-columns: 1fr; }
-  .barRow { grid-template-columns: 100px 1fr; }
+  .teamSeedGrid { grid-template-columns: 1fr; }
+  .barRow { grid-template-columns: 110px 1fr; }
   .resultRow { grid-template-columns: 36px 1fr auto 1fr; }
   .resultSeeds { display: none; }
   .snapshotGrid { grid-template-columns: repeat(2, 1fr); }
