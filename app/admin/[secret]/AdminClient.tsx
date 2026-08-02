@@ -6,6 +6,7 @@ import { useState } from "react";
 import styles from "./admin.module.css";
 
 const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_SECRET ?? "sc2026";
+const LOCKED = process.env.NEXT_PUBLIC_COMPETITION_LOCKED === "true";
 
 const ROUNDS = [
   { key: "round1", label: "Round 1", time: "8:00 AM – 8:25 AM",   bye: "Royal Blues" },
@@ -20,7 +21,7 @@ const ROUNDS = [
 type Props = { secret: string };
 
 export default function AdminClient({ secret }: Props) {
-  const matches     = useQuery(api.matches.getAll);
+  const matches      = useQuery(api.matches.getAll);
   const seedMatches  = useMutation(api.matches.seedMatches);
   const resetMatches = useMutation(api.matches.resetMatches);
   const updateScore  = useMutation(api.matches.updateSeedScore);
@@ -31,7 +32,6 @@ export default function AdminClient({ secret }: Props) {
   const [seeding, setSeeding] = useState(false);
   const [saving,  setSaving]  = useState<string | null>(null);
   const [edits,   setEdits]   = useState<Record<string, Record<number, [string, string]>>>({});
-  const [teamEdits, setTeamEdits] = useState<Record<string, [string, string]>>({});
   const [msg, setMsg] = useState("");
 
   if (secret !== ADMIN_SECRET) {
@@ -50,16 +50,6 @@ export default function AdminClient({ secret }: Props) {
     const r = await seedMatches({});
     flash((r as { message: string }).message);
     setSeeding(false);
-  };
-
-
-  const handleSetFinalTeams = async () => {
-    try {
-      const r = await setFinalTeams({});
-      flash((r as { message: string }).message);
-    } catch (e: unknown) {
-      flash(e instanceof Error ? e.message : "Error setting final teams");
-    }
   };
 
   const handleReset = async () => {
@@ -85,11 +75,13 @@ export default function AdminClient({ secret }: Props) {
     flash(`Saved ${matchId}`);
   };
 
-  const handleTeamSave = async (matchId: string) => {
-    const te = teamEdits[matchId];
-    if (!te) return;
-    await updateTeams({ matchId, team1: te[0], team2: te[1] });
-    flash(`Teams updated for ${matchId}`);
+  const handleSetFinalTeams = async () => {
+    try {
+      const r = await setFinalTeams({});
+      flash((r as { message: string }).message);
+    } catch (e: unknown) {
+      flash(e instanceof Error ? e.message : "Error setting final teams");
+    }
   };
 
   const setEdit = (matchId: string, seed: number, idx: 0 | 1, val: string) => {
@@ -103,7 +95,7 @@ export default function AdminClient({ secret }: Props) {
     });
   };
 
-  // ── Round section (group stage) ──────────────────────────────────
+  // ── Round section ────────────────────────────────────────────────
   const RoundSection = ({
     roundKey, label, time, bye,
   }: { roundKey: string; label: string; time: string; bye: string }) => {
@@ -125,6 +117,7 @@ export default function AdminClient({ secret }: Props) {
               <select
                 className={styles.statusSelect}
                 value={m.status}
+                disabled={LOCKED}
                 onChange={(e) => updateStatus({
                   matchId: m.matchId,
                   status: e.target.value as "pending" | "in_progress" | "complete",
@@ -149,6 +142,7 @@ export default function AdminClient({ secret }: Props) {
                       type="number" min="0" max="8"
                       className={styles.scoreInput}
                       value={cur[0]}
+                      disabled={LOCKED}
                       onChange={(e) => setEdit(m.matchId, s.seed, 0, e.target.value)}
                       placeholder="–"
                     />
@@ -157,6 +151,7 @@ export default function AdminClient({ secret }: Props) {
                       type="number" min="0" max="8"
                       className={styles.scoreInput}
                       value={cur[1]}
+                      disabled={LOCKED}
                       onChange={(e) => setEdit(m.matchId, s.seed, 1, e.target.value)}
                       placeholder="–"
                     />
@@ -174,7 +169,7 @@ export default function AdminClient({ secret }: Props) {
               <button
                 className={styles.btnSave}
                 onClick={() => handleScoreSave(m.matchId)}
-                disabled={saving === m.matchId}
+                disabled={saving === m.matchId || LOCKED}
               >
                 {saving === m.matchId ? "Saving…" : "Save Scores"}
               </button>
@@ -185,29 +180,33 @@ export default function AdminClient({ secret }: Props) {
     );
   };
 
-// ── Final section ────────────────────────────────────────────────
-const FinalSection = () => {
-  const finalMatches = (matches ?? []).filter((m) => m.phase === "final");
-  return (
-    <div className={styles.phaseBlock}>
-      <div className={styles.phaseHeader}>
-        <h2 className={styles.phaseTitle}>Grand Final</h2>
-        <span className={styles.phaseTime}>12:05 PM – 12:30 PM</span>
-      </div>
-      {finalMatches.map((m) => {
-        return (
+  // ── Final section ────────────────────────────────────────────────
+  const FinalSection = () => {
+    const finalMatches = (matches ?? []).filter((m) => m.phase === "final");
+    return (
+      <div className={styles.phaseBlock}>
+        <div className={styles.phaseHeader}>
+          <h2 className={styles.phaseTitle}>Grand Final</h2>
+          <span className={styles.phaseTime}>12:05 PM – 12:30 PM</span>
+        </div>
+        {finalMatches.map((m) => (
           <div key={m.matchId} className={styles.matchCard}>
             <div className={styles.matchCardHeader}>
               <span className={styles.matchCardId}>{m.matchId}</span>
               <span className={styles.matchCardTeams}>
                 {m.team1} vs {m.team2}
               </span>
-              <button className={styles.btnSm} onClick={handleSetFinalTeams}>
+              <button
+                className={styles.btnSm}
+                onClick={handleSetFinalTeams}
+                disabled={LOCKED}
+              >
                 Auto-set from Standings
               </button>
               <select
                 className={styles.statusSelect}
                 value={m.status}
+                disabled={LOCKED}
                 onChange={(e) => updateStatus({
                   matchId: m.matchId,
                   status: e.target.value as "pending" | "in_progress" | "complete",
@@ -232,6 +231,7 @@ const FinalSection = () => {
                       type="number" min="0" max="8"
                       className={styles.scoreInput}
                       value={cur[0]}
+                      disabled={LOCKED}
                       onChange={(e) => setEdit(m.matchId, s.seed, 0, e.target.value)}
                       placeholder="–"
                     />
@@ -240,6 +240,7 @@ const FinalSection = () => {
                       type="number" min="0" max="8"
                       className={styles.scoreInput}
                       value={cur[1]}
+                      disabled={LOCKED}
                       onChange={(e) => setEdit(m.matchId, s.seed, 1, e.target.value)}
                       placeholder="–"
                     />
@@ -255,17 +256,16 @@ const FinalSection = () => {
               <button
                 className={styles.btnSave}
                 onClick={() => handleScoreSave(m.matchId)}
-                disabled={saving === m.matchId}
+                disabled={saving === m.matchId || LOCKED}
               >
                 {saving === m.matchId ? "Saving…" : "Save Scores"}
               </button>
             </div>
           </div>
-        );
-      })}
-    </div>
-  );
-};
+        ))}
+      </div>
+    );
+  };
 
   // ── Render ───────────────────────────────────────────────────────
   return (
@@ -277,12 +277,18 @@ const FinalSection = () => {
         </div>
         <div className={styles.topActions}>
           {msg && <span className={styles.flash}>{msg}</span>}
-          {/* <button className={styles.btnReset} onClick={handleReset}>
-            Reset All Scores
-          </button> */}
-          {/* <button className={styles.btnSeed} onClick={handleSeed} disabled={seeding}>
-            {seeding ? "Seeding…" : "Seed Match Schedule"}
-          </button> */}
+          {LOCKED ? (
+            <span className={styles.lockedBadge}>🔒 Competition Locked</span>
+          ) : (
+            <>
+              <button className={styles.btnReset} onClick={handleReset}>
+                Reset All Scores
+              </button>
+              <button className={styles.btnSeed} onClick={handleSeed} disabled={seeding}>
+                {seeding ? "Seeding…" : "Seed Match Schedule"}
+              </button>
+            </>
+          )}
         </div>
       </div>
 
