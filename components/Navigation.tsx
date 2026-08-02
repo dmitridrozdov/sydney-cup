@@ -30,6 +30,10 @@ export default function Navigation() {
           Competition
         </Link>
 
+        <Link href="/analytics" className={styles.link}>
+          Analytics
+        </Link>
+
         {/* Past events dropdown */}
         <div
           className={styles.dropdown}
@@ -70,6 +74,9 @@ export default function Navigation() {
         <div className={styles.mobileMenu}>
           <Link href="/competition" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>
             Competition
+          </Link>
+          <Link href="/analytics" className={styles.mobileLink} onClick={() => setMenuOpen(false)}>
+            Analytics
           </Link>
           <div className={styles.mobileDivider} />
           <span className={styles.mobileSectionLabel}>Past Events</span>
