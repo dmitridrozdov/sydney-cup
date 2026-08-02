@@ -3,6 +3,7 @@
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import Navigation from "@/components/Navigation";
+import playersData from "@/data/players.json";
 import styles from "./analytics.module.css";
 
 // ── Types ────────────────────────────────────────────────────────────
@@ -17,7 +18,27 @@ interface TeamStat {
   gamesAgainst: number;
   gameDiff: number;
   winPct: number;
-  setWinPct: number;
+}
+
+interface SeedMatchStat {
+  matchId: string;
+  opponent: string;
+  team1Games: number;
+  team2Games: number;
+  won: boolean;
+}
+
+interface TeamSeedStat {
+  team: string;
+  seed: number;
+  players: string[];
+  wins: number;
+  losses: number;
+  played: number;
+  gamesFor: number;
+  gamesAgainst: number;
+  winPct: number;
+  matches: SeedMatchStat[];
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────
@@ -25,14 +46,11 @@ function pct(n: number, d: number) {
   return d === 0 ? 0 : Math.round((n / d) * 100);
 }
 
-function Bar({ value, max, gold = false }: { value: number; max: number; gold?: boolean }) {
+function Bar({ value, max, color = "gold" }: { value: number; max: number; color?: "gold" | "green" | "red" }) {
   const w = max === 0 ? 0 : Math.round((value / max) * 100);
   return (
     <div className={styles.barTrack}>
-      <div
-        className={gold ? styles.barFillGold : styles.barFill}
-        style={{ width: `${w}%` }}
-      />
+      <div className={`${styles.barFill} ${styles[`barFill_${color}`]}`} style={{ width: `${w}%` }} />
     </div>
   );
 }
@@ -66,12 +84,10 @@ export default function AnalyticsPage() {
 
   // ── Build team stats ──────────────────────────────────────────────
   const statsMap: Record<string, TeamStat> = {};
-
   const ensure = (team: string) => {
     if (!statsMap[team]) statsMap[team] = {
       team, games: 0, sets: 0, matchesWon: 0, matchesLost: 0,
-      matchesPlayed: 0, gamesFor: 0, gamesAgainst: 0, gameDiff: 0,
-      winPct: 0, setWinPct: 0,
+      matchesPlayed: 0, gamesFor: 0, gamesAgainst: 0, gameDiff: 0, winPct: 0,
     };
   };
 
@@ -91,8 +107,54 @@ export default function AnalyticsPage() {
     ...s,
     gameDiff: s.gamesFor - s.gamesAgainst,
     winPct: pct(s.matchesWon, s.matchesPlayed),
-    setWinPct: pct(s.sets, s.matchesPlayed * 3),
   })).sort((a, b) => b.sets - a.sets || b.gamesFor - a.gamesFor);
+
+  // ── Build per-seed stats per team ─────────────────────────────────
+  const seedStats: TeamSeedStat[] = [];
+
+  for (const school of playersData.schools) {
+    for (const seedInfo of school.seeds) {
+      const stat: TeamSeedStat = {
+        team: school.name,
+        seed: seedInfo.seed,
+        players: seedInfo.players,
+        wins: 0, losses: 0, played: 0,
+        gamesFor: 0, gamesAgainst: 0,
+        winPct: 0, matches: [],
+      };
+
+      for (const m of groupMatches) {
+        const isTeam1 = m.team1 === school.name;
+        const isTeam2 = m.team2 === school.name;
+        if (!isTeam1 && !isTeam2) continue;
+
+        const s = m.seedScores.find((x) => x.seed === seedInfo.seed);
+        if (!s || s.team1Games === undefined || s.team2Games === undefined) continue;
+
+        const myGames  = isTeam1 ? s.team1Games : s.team2Games;
+        const oppGames = isTeam1 ? s.team2Games : s.team1Games;
+        const won = myGames > oppGames;
+        const opponent = isTeam1 ? m.team2 : m.team1;
+
+        stat.played++;
+        stat.gamesFor += myGames;
+        stat.gamesAgainst += oppGames;
+        if (won) stat.wins++;
+        else stat.losses++;
+
+        stat.matches.push({
+          matchId: m.matchId,
+          opponent,
+          team1Games: myGames,
+          team2Games: oppGames,
+          won,
+        });
+      }
+
+      stat.winPct = pct(stat.wins, stat.played);
+      seedStats.push(stat);
+    }
+  }
 
   // ── Aggregate stats ───────────────────────────────────────────────
   const totalGames = groupMatches.reduce(
@@ -101,44 +163,31 @@ export default function AnalyticsPage() {
   const avgGamesPerMatch = groupMatches.length
     ? Math.round(totalGames / groupMatches.length) : 0;
 
-  const closestMatch = [...groupMatches].sort((a, b) => {
-    const da = Math.abs((a.team1Total ?? 0) - (a.team2Total ?? 0));
-    const db = Math.abs((b.team1Total ?? 0) - (b.team2Total ?? 0));
-    return da - db;
-  })[0];
+  const closestMatch = [...groupMatches].sort((a, b) =>
+    Math.abs((a.team1Total ?? 0) - (a.team2Total ?? 0)) -
+    Math.abs((b.team1Total ?? 0) - (b.team2Total ?? 0))
+  )[0];
 
-  const biggestWin = [...groupMatches].sort((a, b) => {
-    const da = Math.abs((a.team1Total ?? 0) - (a.team2Total ?? 0));
-    const db = Math.abs((b.team1Total ?? 0) - (b.team2Total ?? 0));
-    return db - da;
-  })[0];
+  const biggestWin = [...groupMatches].sort((a, b) =>
+    Math.abs((b.team1Total ?? 0) - (b.team2Total ?? 0)) -
+    Math.abs((a.team1Total ?? 0) - (a.team2Total ?? 0))
+  )[0];
 
   const highestScore = [...groupMatches].reduce((best, m) => {
     const t1 = m.team1Total ?? 0; const t2 = m.team2Total ?? 0;
-    if (t1 > best.score) return { score: t1, team: m.team1, opp: m.team2, matchId: m.matchId };
-    if (t2 > best.score) return { score: t2, team: m.team2, opp: m.team1, matchId: m.matchId };
+    if (t1 > best.score) return { score: t1, team: m.team1, opp: m.team2 };
+    if (t2 > best.score) return { score: t2, team: m.team2, opp: m.team1 };
     return best;
-  }, { score: 0, team: "", opp: "", matchId: "" });
+  }, { score: 0, team: "", opp: "" });
 
-  // Per-seed performance across all matches
-  const seedTotals = [1, 2, 3].map((seed) => {
-    let wins = 0; let played = 0;
-    for (const m of groupMatches) {
-      const s = m.seedScores.find((x) => x.seed === seed);
-      if (s?.team1Games !== undefined && s?.team2Games !== undefined) {
-        played++;
-        if (s.team1Games > s.team2Games) wins++;
-        else if (s.team2Games > s.team1Games) wins++;
-      }
-    }
-    const t1wins = groupMatches.reduce((n, m) => {
-      const s = m.seedScores.find((x) => x.seed === seed);
-      return n + (s?.team1Games !== undefined && s.team1Games > (s.team2Games ?? 0) ? 1 : 0);
-    }, 0);
-    return { seed, played, wins: t1wins, totalPlayed: played };
+  // Global seed win rates
+  const globalSeedStats = [1, 2, 3].map((seed) => {
+    const relevant = seedStats.filter((s) => s.seed === seed);
+    const wins = relevant.reduce((n, s) => n + s.wins, 0);
+    const played = relevant.reduce((n, s) => n + s.played, 0);
+    return { seed, wins, played, winPct: pct(wins, played) };
   });
 
-  // Champion
   const champion = finalMatch
     ? ((finalMatch.team1Total ?? 0) > (finalMatch.team2Total ?? 0)
       ? finalMatch.team1 : finalMatch.team2)
@@ -149,8 +198,15 @@ export default function AnalyticsPage() {
       ? finalMatch.team2 : finalMatch.team1)
     : teams[1]?.team ?? "TBD";
 
-  const maxGames = Math.max(...teams.map((t) => t.gamesFor));
-  const maxSets  = Math.max(...teams.map((t) => t.sets));
+  const maxGames = Math.max(...teams.map((t) => t.gamesFor), 1);
+  const maxSets  = Math.max(...teams.map((t) => t.sets), 1);
+  const maxSeedGames = Math.max(...seedStats.map((s) => s.gamesFor), 1);
+
+  // Group seed stats by team for the detailed section
+  const seedsByTeam = playersData.schools.map((school) => ({
+    school,
+    seeds: seedStats.filter((s) => s.team === school.name).sort((a, b) => a.seed - b.seed),
+  }));
 
   return (
     <main className={styles.main}>
@@ -289,7 +345,7 @@ export default function AnalyticsPage() {
                     <td>
                       <div className={styles.winPctCell}>
                         <span>{t.winPct}%</span>
-                        <Bar value={t.winPct} max={100} gold={i < 2} />
+                        <Bar value={t.winPct} max={100} color={i < 2 ? "gold" : "green"} />
                       </div>
                     </td>
                   </tr>
@@ -313,14 +369,14 @@ export default function AnalyticsPage() {
                   <div className={styles.barPairRow}>
                     <span className={styles.barPairLabel}>For</span>
                     <div className={styles.barTrackWide}>
-                      <div className={styles.barFillGold} style={{ width: `${Math.round((t.gamesFor / maxGames) * 100)}%` }} />
+                      <div className={styles.barFill} style={{ width: `${Math.round((t.gamesFor / maxGames) * 100)}%`, background: "var(--gold)" }} />
                     </div>
                     <span className={styles.barPairVal}>{t.gamesFor}</span>
                   </div>
                   <div className={styles.barPairRow}>
                     <span className={styles.barPairLabel}>Agn</span>
                     <div className={styles.barTrackWide}>
-                      <div className={styles.barFillRed} style={{ width: `${Math.round((t.gamesAgainst / maxGames) * 100)}%` }} />
+                      <div className={styles.barFill} style={{ width: `${Math.round((t.gamesAgainst / maxGames) * 100)}%`, background: "var(--red)", opacity: 0.7 }} />
                     </div>
                     <span className={styles.barPairVal}>{t.gamesAgainst}</span>
                   </div>
@@ -342,7 +398,7 @@ export default function AnalyticsPage() {
                 <div className={styles.barTeam}>{t.team}</div>
                 <div className={styles.barSingle}>
                   <div className={styles.barTrackWide}>
-                    <div className={styles.barFillGold} style={{ width: `${Math.round((t.sets / maxSets) * 100)}%` }} />
+                    <div className={styles.barFill} style={{ width: `${Math.round((t.sets / maxSets) * 100)}%`, background: "var(--gold)" }} />
                   </div>
                   <span className={styles.barPairVal}>{t.sets}</span>
                 </div>
@@ -351,31 +407,160 @@ export default function AnalyticsPage() {
           </div>
         </section>
 
-        {/* ── SEED ANALYSIS ── */}
+        {/* ── GLOBAL SEED PERFORMANCE ── */}
         <section className={styles.section}>
           <div className={styles.sectionHeader}>
             <span className={styles.sectionLabel}>Doubles Pairs</span>
-            <h2 className={styles.sectionTitle}>Seed Performance</h2>
+            <h2 className={styles.sectionTitle}>Seed Performance — All Teams</h2>
           </div>
           <div className={styles.seedGrid}>
-            {seedTotals.map((s) => (
+            {globalSeedStats.map((s) => (
               <div key={s.seed} className={styles.seedCard}>
                 <div className={styles.seedCardNum}>Seed {s.seed}</div>
                 <div className={styles.seedCardStat}>{s.wins}</div>
-                <div className={styles.seedCardLabel}>wins from {s.totalPlayed} matches</div>
+                <div className={styles.seedCardLabel}>wins from {s.played} matches</div>
                 <div className={styles.seedCardBar}>
-                  <div
-                    className={styles.seedCardFill}
-                    style={{ width: `${pct(s.wins, s.totalPlayed)}%` }}
-                  />
+                  <div className={styles.seedCardFill} style={{ width: `${s.winPct}%` }} />
                 </div>
-                <div className={styles.seedCardPct}>{pct(s.wins, s.totalPlayed)}% win rate</div>
+                <div className={styles.seedCardPct}>{s.winPct}% win rate</div>
               </div>
             ))}
           </div>
         </section>
 
-        {/* ── MATCH BY MATCH ── */}
+        {/* ── PER-TEAM SEED BREAKDOWN ── */}
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <span className={styles.sectionLabel}>Detailed Breakdown</span>
+            <h2 className={styles.sectionTitle}>Seed Statistics by Team</h2>
+          </div>
+
+          <div className={styles.teamSeedGrid}>
+            {seedsByTeam.map(({ school, seeds }) => (
+              <div key={school.id} className={styles.teamSeedCard}>
+                <div className={styles.teamSeedHeader}>
+                  <span className={styles.teamSeedName}>{school.name}</span>
+                </div>
+                <div className={styles.teamSeedSeeds}>
+                  {seeds.map((s) => (
+                    <div key={s.seed} className={styles.seedDetail}>
+                      {/* Seed header */}
+                      <div className={styles.seedDetailHeader}>
+                        <span className={styles.seedDetailNum}>S{s.seed}</span>
+                        <span className={styles.seedDetailPlayers}>
+                          {s.players.join(" & ")}
+                        </span>
+                        <span className={`${styles.seedDetailRecord} ${s.wins > s.losses ? styles.recordPos : s.losses > s.wins ? styles.recordNeg : ""}`}>
+                          {s.wins}W – {s.losses}L
+                        </span>
+                      </div>
+
+                      {/* Win rate bar */}
+                      <div className={styles.seedDetailBarRow}>
+                        <div className={styles.barTrackWide}>
+                          <div
+                            className={styles.barFill}
+                            style={{
+                              width: `${s.winPct}%`,
+                              background: s.winPct >= 60 ? "var(--green-light)"
+                                : s.winPct >= 40 ? "var(--gold)"
+                                : "var(--red)",
+                            }}
+                          />
+                        </div>
+                        <span className={styles.seedDetailPct}>{s.winPct}%</span>
+                      </div>
+
+                      {/* Games for/against */}
+                      <div className={styles.seedDetailStats}>
+                        <span className={styles.seedDetailStat}>
+                          <span className={styles.seedDetailStatLbl}>GF</span>
+                          <span className={styles.seedDetailStatVal}>{s.gamesFor}</span>
+                        </span>
+                        <span className={styles.seedDetailStat}>
+                          <span className={styles.seedDetailStatLbl}>GA</span>
+                          <span className={styles.seedDetailStatVal}>{s.gamesAgainst}</span>
+                        </span>
+                        <span className={styles.seedDetailStat}>
+                          <span className={styles.seedDetailStatLbl}>+/−</span>
+                          <span className={`${styles.seedDetailStatVal} ${s.gamesFor - s.gamesAgainst >= 0 ? styles.diffPos : styles.diffNeg}`}>
+                            {s.gamesFor - s.gamesAgainst > 0 ? `+${s.gamesFor - s.gamesAgainst}` : s.gamesFor - s.gamesAgainst}
+                          </span>
+                        </span>
+                        <span className={styles.seedDetailStat}>
+                          <span className={styles.seedDetailStatLbl}>Played</span>
+                          <span className={styles.seedDetailStatVal}>{s.played}</span>
+                        </span>
+                      </div>
+
+                      {/* Match-by-match results */}
+                      <div className={styles.seedMatchList}>
+                        {s.matches.map((mr) => (
+                          <div key={mr.matchId} className={`${styles.seedMatchRow} ${mr.won ? styles.seedMatchWon : styles.seedMatchLost}`}>
+                            <span className={styles.seedMatchId}>{mr.matchId}</span>
+                            <span className={styles.seedMatchOpp}>vs {mr.opponent}</span>
+                            <span className={styles.seedMatchScore}>
+                              <span className={mr.won ? styles.seedScoreWin : styles.seedScoreLose}>{mr.team1Games}</span>
+                              <span className={styles.seedScoreDash}>–</span>
+                              <span className={!mr.won ? styles.seedScoreWin : styles.seedScoreLose}>{mr.team2Games}</span>
+                            </span>
+                            <span className={`${styles.seedMatchResult} ${mr.won ? styles.seedResultW : styles.seedResultL}`}>
+                              {mr.won ? "W" : "L"}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── SEED GAMES COMPARISON ── */}
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <span className={styles.sectionLabel}>Scoring by Pair</span>
+            <h2 className={styles.sectionTitle}>Games Won per Seed</h2>
+          </div>
+          {[1, 2, 3].map((seed) => {
+            const relevant = seedStats
+              .filter((s) => s.seed === seed)
+              .sort((a, b) => b.gamesFor - a.gamesFor);
+            return (
+              <div key={seed} className={styles.seedCompareBlock}>
+                <div className={styles.seedCompareTitle}>Seed {seed}</div>
+                {relevant.map((s) => (
+                  <div key={s.team} className={styles.barRow}>
+                    <div className={styles.barTeam}>
+                      <div className={styles.barTeamName}>{s.team}</div>
+                      <div className={styles.barTeamPlayers}>{s.players.join(" & ")}</div>
+                    </div>
+                    <div className={styles.barPair}>
+                      <div className={styles.barPairRow}>
+                        <span className={styles.barPairLabel}>For</span>
+                        <div className={styles.barTrackWide}>
+                          <div className={styles.barFill} style={{ width: `${Math.round((s.gamesFor / maxSeedGames) * 100)}%`, background: "var(--gold)" }} />
+                        </div>
+                        <span className={styles.barPairVal}>{s.gamesFor}</span>
+                      </div>
+                      <div className={styles.barPairRow}>
+                        <span className={styles.barPairLabel}>Agn</span>
+                        <div className={styles.barTrackWide}>
+                          <div className={styles.barFill} style={{ width: `${Math.round((s.gamesAgainst / maxSeedGames) * 100)}%`, background: "var(--red)", opacity: 0.7 }} />
+                        </div>
+                        <span className={styles.barPairVal}>{s.gamesAgainst}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            );
+          })}
+        </section>
+
+        {/* ── ALL MATCHES ── */}
         <section className={styles.section}>
           <div className={styles.sectionHeader}>
             <span className={styles.sectionLabel}>Full Results</span>
