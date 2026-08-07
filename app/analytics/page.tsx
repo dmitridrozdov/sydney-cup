@@ -124,8 +124,8 @@ export default function AnalyticsPage() {
       };
 
       for (const m of groupMatches) {
-        const isTeam1 = m.team1 === school.name;
-        const isTeam2 = m.team2 === school.name;
+        const isTeam1 = m.team1 === (school.matchName ?? school.name);
+        const isTeam2 = m.team2 === (school.matchName ?? school.name);
         if (!isTeam1 && !isTeam2) continue;
 
         const s = m.seedScores.find((x) => x.seed === seedInfo.seed);
